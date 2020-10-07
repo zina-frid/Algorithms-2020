@@ -101,6 +101,8 @@ public class JavaTasks {
      * 99.5
      * 121.3
      */
+    //Трудоемкость = O(n)
+    //Ресурсоемкость = O(n)
     static public void sortTemperatures(String inputName, String outputName) throws IOException {
 
         ArrayList<Integer> data = new ArrayList<>();//list for temperatures
@@ -110,7 +112,9 @@ public class JavaTasks {
                 String str;
                 int number = 1;
                 while ((str = br.readLine()) != null) {
-                    data.add((int)(Double.parseDouble(str) * 10) + 2730);
+                    int temp = (int)(Double.parseDouble(str) * 10) + 2730;
+                    if (temp < 0 || temp > 7730) throw new IllegalArgumentException();
+                    data.add(temp);
                 }//make every temp integer by *10 and positive by +273*10
         }
 
