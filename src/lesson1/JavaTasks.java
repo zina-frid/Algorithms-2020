@@ -2,6 +2,9 @@ package lesson1;
 
 import kotlin.NotImplementedError;
 
+import java.io.*;
+import java.util.ArrayList;
+
 @SuppressWarnings("unused")
 public class JavaTasks {
     /**
@@ -98,8 +101,33 @@ public class JavaTasks {
      * 99.5
      * 121.3
      */
-    static public void sortTemperatures(String inputName, String outputName) {
-        throw new NotImplementedError();
+    static public void sortTemperatures(String inputName, String outputName) throws IOException {
+
+        ArrayList<Integer> data = new ArrayList<>();//list for temperatures
+
+        BufferedReader br = new BufferedReader(new FileReader(inputName));
+        try (br) {
+                String str;
+                int number = 1;
+                while ((str = br.readLine()) != null) {
+                    data.add((int)(Double.parseDouble(str) * 10) + 2730);
+                }//make every temp integer by *10 and positive by +273*10
+        }
+
+        int[] result = new int[data.size()];
+        for (int i = 0; i < data.size(); i++) {
+            result[i] = data.get(i);
+        } //int array of transformed temps
+
+        BufferedWriter bw = new BufferedWriter(new FileWriter(outputName));
+        try(bw){
+            result = Sorts.countingSort(result,7730);
+            for(int res: result){
+                bw.write((((double) (res - 2730))/10.0) + "\n");
+            }//transform back every temp in sorted array and write it
+        }
+
+
     }
 
     /**
