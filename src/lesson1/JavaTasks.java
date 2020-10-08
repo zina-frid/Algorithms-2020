@@ -110,25 +110,29 @@ public class JavaTasks {
 
         BufferedReader br = new BufferedReader(new FileReader(inputName));
         try (br) {
+            //make every temp integer by *10 and positive by +273*10
                 String str;
                 while ((str = br.readLine()) != null) {
                     int temp = (int)(Double.parseDouble(str) * 10) + 2730;
                     if (temp < 0 || temp > 7730) throw new IllegalArgumentException();
                     data.add(temp);
-                }//make every temp integer by *10 and positive by +273*10
+                }
         }
 
         int[] result = new int[data.size()];
+
+        //int array of transformed temps
         for (int i = 0; i < data.size(); i++) {
             result[i] = data.get(i);
-        } //int array of transformed temps
+        }
 
         BufferedWriter bw = new BufferedWriter(new FileWriter(outputName));
         try(bw){
+            //transform back every temp in sorted array and write it
             result = Sorts.countingSort(result,7730);
             for(int res: result){
                 bw.write((((double) (res - 2730))/10.0) + "\n");
-            }//transform back every temp in sorted array and write it
+            }
         }
 
 
@@ -163,39 +167,42 @@ public class JavaTasks {
      * 2
      * 2
      */
-    //Трудоемкость = O()
-    //Ресурсоемкость = O()
+    //Трудоемкость = O(n)
+    //Ресурсоемкость = O(n)
     static public void sortSequence(String inputName, String outputName) throws IOException {
-        HashMap<Integer, Integer> count = new HashMap<>();
-        ArrayList<Integer> numbers = new ArrayList<>();
+        HashMap<Integer, Integer> count = new HashMap<>(); //map for numbers and their amount
+        ArrayList<Integer> numbers = new ArrayList<>(); //list for numbers sequence
 
         BufferedReader br = new BufferedReader(new FileReader(inputName));
         try (br) {
+            //make every number integer, add it to list and put it to map
             String str;
             while ((str = br.readLine()) != null) {
-                Integer temp = Integer.parseInt(str);
-                numbers.add(temp);
-                if(!count.containsKey(temp)) count.put(temp, 1);
-                else count.put(temp, count.get(temp)+1);
+                Integer num = Integer.parseInt(str);
+                numbers.add(num);
+                if(!count.containsKey(num)) count.put(num, 1);
+                else count.put(num, count.get(num)+1); //+1, if num is already in map
             }
         }
 
-        int maxRepeat = 0;
-        int minNumber = -1;
-        for(Integer key: count.keySet()){
+        int maxRepeats = 0; //for maximum repeats
+        int minNum = -1; //for minimum num from numbers with maximum repeats
+        for(Integer key: count.keySet()){ //find out maxRepeats and minimum num
             int value = count.get(key);
-            if (value > maxRepeat || (value == maxRepeat && key < minNumber)){
-                maxRepeat = value;
-                minNumber = key;
+            if (value > maxRepeats || (value == maxRepeats && key < minNum)){
+                maxRepeats = value;
+                minNum = key;
             }
         }
 
         BufferedWriter bw = new BufferedWriter(new FileWriter(outputName));
-        try(bw){
-            for(Integer key: numbers) {
-                if(key != minNumber) bw.write(key + "\n");
+        try (bw){
+            for (Integer key: numbers) { //write all numbers except minNum
+                if (key != minNum)
+                    bw.write(key + "\n");
             }
-            for(int i = 0; i < maxRepeat; i++) bw.write(minNumber + "\n");
+            for (int i = 0; i < maxRepeats; i++) //write minNum
+                bw.write(minNum + "\n");
             }
 
     }
