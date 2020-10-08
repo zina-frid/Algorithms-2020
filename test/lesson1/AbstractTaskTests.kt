@@ -101,7 +101,7 @@ abstract class AbstractTaskTests : AbstractFileTests() {
     }
 
     protected fun sortTemperatures(sortTemperatures: (String, String) -> Unit) {
-        try {
+        try { // test 1 for usual cases
             sortTemperatures("input/temp_in1.txt", "temp.txt")
             assertFileContent(
                 "temp.txt",
@@ -118,7 +118,7 @@ abstract class AbstractTaskTests : AbstractFileTests() {
         } finally {
             File("temp.txt").delete()
         }
-        try { //simple case 2
+        try { // test 2 for usual cases
             sortTemperatures("input/temp_in2.txt", "temp.txt")
             assertFileContent(
                 "temp.txt",
@@ -134,7 +134,7 @@ abstract class AbstractTaskTests : AbstractFileTests() {
             File("temp.txt").delete()
         }
 
-        try { //empty input file
+        try { //test for empty input file
             sortTemperatures("input/temp_in3.txt", "temp.txt")
             assertFileContent(
                 "temp.txt",
@@ -144,7 +144,7 @@ abstract class AbstractTaskTests : AbstractFileTests() {
             File("temp.txt").delete()
         }
 
-
+        //test for productivity
         fun testGeneratedTemperatures(size: Int): PerfResult<Unit> {
             try {
                 val res = generateTemperatures(size)
@@ -208,7 +208,7 @@ abstract class AbstractTaskTests : AbstractFileTests() {
     }
 
     protected fun sortSequence(sortSequence: (String, String) -> Unit) {
-        try {
+        try { // test 1 for usual cases
             sortSequence("input/seq_in1.txt", "temp.txt")
             assertFileContent(
                 "temp.txt",
@@ -225,7 +225,7 @@ abstract class AbstractTaskTests : AbstractFileTests() {
         } finally {
             File("temp.txt").delete()
         }
-        try {
+        try { // test 2 for usual case
             sortSequence("input/seq_in2.txt", "temp.txt")
             assertFileContent(
                 "temp.txt",
@@ -244,7 +244,7 @@ abstract class AbstractTaskTests : AbstractFileTests() {
         } finally {
             File("temp.txt").delete()
         }
-        try {
+        try { // test 3 for usual case
             sortSequence("input/seq_in3.txt", "temp.txt")
             assertFileContent(
                 "temp.txt",
@@ -263,7 +263,7 @@ abstract class AbstractTaskTests : AbstractFileTests() {
         } finally {
             File("temp.txt").delete()
         }
-        try {
+        try {// test 4 for usual case
             sortSequence("input/seq_in4.txt", "temp.txt")
             assertFileContent(
                 "temp.txt",
@@ -283,7 +283,7 @@ abstract class AbstractTaskTests : AbstractFileTests() {
         } finally {
             File("temp.txt").delete()
         }
-        try {
+        try { // test 5 for usual case
             sortSequence("input/seq_in5.txt", "temp.txt")
             assertFileContent(
                 "temp.txt",
@@ -304,6 +304,17 @@ abstract class AbstractTaskTests : AbstractFileTests() {
             File("temp.txt").delete()
         }
 
+        try { //test for empty input file
+            sortTemperatures("input/seq_6.txt", "temp.txt")
+            assertFileContent(
+                "temp.txt",
+                ""
+            )
+        } finally {
+            File("temp.txt").delete()
+        }
+
+        //test for productivity
         fun testGeneratedSequence(totalSize: Int, answerSize: Int): PerfResult<Unit> {
             try {
                 val res = generateSequence(totalSize, answerSize)
