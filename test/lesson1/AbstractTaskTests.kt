@@ -305,7 +305,7 @@ abstract class AbstractTaskTests : AbstractFileTests() {
         }
 
         try { //test for empty input file
-            sortTemperatures("input/seq_6.txt", "temp.txt")
+            sortSequence("input/seq_in6.txt", "temp.txt")
             assertFileContent(
                 "temp.txt",
                 ""
