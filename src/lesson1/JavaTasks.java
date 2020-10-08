@@ -4,6 +4,7 @@ import kotlin.NotImplementedError;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 @SuppressWarnings("unused")
 public class JavaTasks {
@@ -110,7 +111,6 @@ public class JavaTasks {
         BufferedReader br = new BufferedReader(new FileReader(inputName));
         try (br) {
                 String str;
-                int number = 1;
                 while ((str = br.readLine()) != null) {
                     int temp = (int)(Double.parseDouble(str) * 10) + 2730;
                     if (temp < 0 || temp > 7730) throw new IllegalArgumentException();
@@ -163,8 +163,41 @@ public class JavaTasks {
      * 2
      * 2
      */
-    static public void sortSequence(String inputName, String outputName) {
-        throw new NotImplementedError();
+    //Трудоемкость = O()
+    //Ресурсоемкость = O()
+    static public void sortSequence(String inputName, String outputName) throws IOException {
+        HashMap<Integer, Integer> count = new HashMap<>();
+        ArrayList<Integer> numbers = new ArrayList<>();
+
+        BufferedReader br = new BufferedReader(new FileReader(inputName));
+        try (br) {
+            String str;
+            while ((str = br.readLine()) != null) {
+                Integer temp = Integer.parseInt(str);
+                numbers.add(temp);
+                if(!count.containsKey(temp)) count.put(temp, 1);
+                else count.put(temp, count.get(temp)+1);
+            }
+        }
+
+        int maxRepeat = 0;
+        int minNumber = -1;
+        for(Integer key: count.keySet()){
+            int value = count.get(key);
+            if (value > maxRepeat || (value == maxRepeat && key < minNumber)){
+                maxRepeat = value;
+                minNumber = key;
+            }
+        }
+
+        BufferedWriter bw = new BufferedWriter(new FileWriter(outputName));
+        try(bw){
+            for(Integer key: numbers) {
+                if(key != minNumber) bw.write(key + "\n");
+            }
+            for(int i = 0; i < maxRepeat; i++) bw.write(minNumber + "\n");
+            }
+
     }
 
     /**
