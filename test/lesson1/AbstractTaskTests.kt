@@ -147,6 +147,15 @@ abstract class AbstractTaskTests : AbstractFileTests() {
             File("temp.txt").delete()
         }
 
+        // test for exception
+        try {
+            assertThrows<IllegalArgumentException> {
+                sortTemperatures("input/temp_in4.txt", "temp.txt")
+            }
+        } finally {
+            File("temp.txt").delete()
+        }
+
         //test for performance
         fun testGeneratedTemperatures(size: Int): PerfResult<Unit> {
             try {
@@ -167,13 +176,7 @@ abstract class AbstractTaskTests : AbstractFileTests() {
 
         println("sortTemperatures: $perf")
 
-        try { // test for exception
-            assertThrows<IllegalArgumentException> {
-                sortTemperatures("input/temp_in4.txt", "temp.txt")
-            }
-        } finally {
-            File("temp.txt").delete()
-        }
+
     }
 
     private fun generateSequence(totalSize: Int, answerSize: Int): PerfResult<Unit> {
