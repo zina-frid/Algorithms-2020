@@ -97,8 +97,37 @@ public class JavaAlgorithms {
      * Если имеется несколько самых длинных общих подстрок одной длины,
      * вернуть ту из них, которая встречается раньше в строке first.
      */
-    static public String longestCommonSubstring(String firs, String second) {
-        throw new NotImplementedError();
+    //Пусть n - кол-во букв в самой длинной строке
+    //Трудоемкость = O(n^2)
+    //Ресурсоемкость = O(n^2) - худший случай (кол-во букв в обеих строках = n)
+    //               = O(n) - лучший случай (кол-во букв в одной из строк = 1)
+    static public String longestCommonSubstring(String first, String second) {
+
+        if (first == null || second == null || first.length() == 0 || second.length() == 0) return "";
+        if (first.equals(second)) return first;
+
+        //matrix for data about matches
+        int[][] matrix = new int[first.length()][second.length()];
+
+        int maxLength = 0; //for the longest match
+        int maxI = 0; // for the end index of the longest match
+
+        for (int i = 0; i < matrix.length; i++) {
+            for (int j = 0; j < matrix[i].length; j++) {
+                if (first.charAt(i) == second.charAt(j)) {
+                    if (i != 0 && j != 0) { //if matrix[i][j] IS NOT the beginning of the diagonal
+                        matrix[i][j] = matrix[i - 1][j - 1] + 1;
+                    } else { //if matrix[i][j] IS the beginning of the diagonal
+                        matrix[i][j] = 1;
+                    }
+                    if (matrix[i][j] > maxLength) { //length check
+                        maxLength = matrix[i][j];
+                        maxI = i;
+                    }
+                }
+            }
+        }//return the substring of first
+        return first.substring(maxI - maxLength + 1, maxI + 1);
     }
 
     /**
