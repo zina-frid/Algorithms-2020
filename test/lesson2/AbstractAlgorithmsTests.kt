@@ -74,11 +74,33 @@ abstract class AbstractAlgorithmsTests {
     }
 
     fun longestCommonSubstring(longestCommonSubstring: (String, String) -> String) {
-        assertEquals("", longestCommonSubstring("мой мир", "я"))
+
+        //tests for usual cases
         assertEquals("зд", longestCommonSubstring("здравствуй мир", "мы здесь"))
         assertEquals("СЕРВАТОР", longestCommonSubstring("ОБСЕРВАТОРИЯ", "КОНСЕРВАТОРЫ"))
+        assertEquals("забот", longestCommonSubstring("лето полное забот", "беззаботное лето"))
 
 
+        //tests for special cases and edge cases
+
+        //tests for empty answer
+        assertEquals("", longestCommonSubstring("мой мир", "я"))
+        assertEquals("", longestCommonSubstring("", ""))
+        assertEquals("", longestCommonSubstring("мой мир", ""))
+        assertEquals("", longestCommonSubstring("", "я"))
+
+        //tests for the first longest substring, if there are more than one substrings
+        assertEquals("творо", longestCommonSubstring("творожная масса", "масса творога"))
+        assertEquals("лесни", longestCommonSubstring("лесничий топор", "топор лесника"))
+
+        //tests for register
+        assertEquals("ЕРВат", longestCommonSubstring("ОбсЕРВаторИЯ", "КОНСЕРВатОРЫ"))
+        assertEquals("РеН", longestCommonSubstring("ВаРеНиКи", "вАРеНье"))
+
+        //test for the longest string with length 1
+        assertEquals("о", longestCommonSubstring("лоск", "собака"))
+
+        //test for performance
         assertEquals(
             "огда ", longestCommonSubstring(
                 """
