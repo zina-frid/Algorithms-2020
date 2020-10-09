@@ -89,6 +89,9 @@ abstract class AbstractAlgorithmsTests {
         assertEquals("", longestCommonSubstring("мой мир", ""))
         assertEquals("", longestCommonSubstring("", "я"))
 
+        //test for the longest string with length 1
+        assertEquals("о", longestCommonSubstring("лоск", "собака"))
+
         //tests for the first longest substring, if there are more than one substrings
         assertEquals("творо", longestCommonSubstring("творожная масса", "масса творога"))
         assertEquals("лесни", longestCommonSubstring("лесничий топор", "топор лесника"))
@@ -96,9 +99,6 @@ abstract class AbstractAlgorithmsTests {
         //tests for register
         assertEquals("ЕРВат", longestCommonSubstring("ОбсЕРВаторИЯ", "КОНСЕРВатОРЫ"))
         assertEquals("РеН", longestCommonSubstring("ВаРеНиКи", "вАРеНье"))
-
-        //test for the longest string with length 1
-        assertEquals("о", longestCommonSubstring("лоск", "собака"))
 
         //test for performance
         assertEquals(

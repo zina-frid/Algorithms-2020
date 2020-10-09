@@ -3,6 +3,8 @@ package lesson2;
 import kotlin.NotImplementedError;
 import kotlin.Pair;
 
+import java.util.Arrays;
+
 @SuppressWarnings("unused")
 public class JavaAlgorithms {
     /**
@@ -141,6 +143,22 @@ public class JavaAlgorithms {
      * Единица простым числом не считается.
      */
     static public int calcPrimesNumber(int limit) {
-        throw new NotImplementedError();
+        if (limit <= 1) return 0;
+        boolean[] array = new boolean[limit + 1];
+        Arrays.fill(array, true);
+        int i = 2;
+        while (i*i <= limit){
+            if(array[i]){
+                for(int j = i*i; j <= limit; j += i){
+                    array[j] = false;
+                }
+            }
+            i++;
+        }
+        int result = 0;
+        for(int k = 2; k < limit + 1; k++){
+            if(array[k]) result++;
+        }
+        return result;
     }
 }
