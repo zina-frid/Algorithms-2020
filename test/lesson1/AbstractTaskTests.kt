@@ -1,6 +1,7 @@
 package lesson1
 
 import org.junit.jupiter.api.Assertions.assertArrayEquals
+import org.junit.jupiter.api.assertThrows
 import util.PerfResult
 import util.estimate
 import java.io.BufferedWriter
@@ -101,7 +102,8 @@ abstract class AbstractTaskTests : AbstractFileTests() {
     }
 
     protected fun sortTemperatures(sortTemperatures: (String, String) -> Unit) {
-        try { // test 1 for usual cases
+        // tests for usual cases
+        try {
             sortTemperatures("input/temp_in1.txt", "temp.txt")
             assertFileContent(
                 "temp.txt",
@@ -118,7 +120,7 @@ abstract class AbstractTaskTests : AbstractFileTests() {
         } finally {
             File("temp.txt").delete()
         }
-        try { // test 2 for usual cases
+        try {
             sortTemperatures("input/temp_in2.txt", "temp.txt")
             assertFileContent(
                 "temp.txt",
@@ -134,7 +136,8 @@ abstract class AbstractTaskTests : AbstractFileTests() {
             File("temp.txt").delete()
         }
 
-        try { //test for empty input file
+        //test for empty input file
+        try {
             sortTemperatures("input/temp_in3.txt", "temp.txt")
             assertFileContent(
                 "temp.txt",
@@ -144,7 +147,7 @@ abstract class AbstractTaskTests : AbstractFileTests() {
             File("temp.txt").delete()
         }
 
-        //test for productivity
+        //test for performance
         fun testGeneratedTemperatures(size: Int): PerfResult<Unit> {
             try {
                 val res = generateTemperatures(size)
@@ -163,6 +166,14 @@ abstract class AbstractTaskTests : AbstractFileTests() {
         }
 
         println("sortTemperatures: $perf")
+
+        try { // test for exception
+            assertThrows<IllegalArgumentException> {
+                sortTemperatures("input/temp_in4.txt", "temp.txt")
+            }
+        } finally {
+            File("temp.txt").delete()
+        }
     }
 
     private fun generateSequence(totalSize: Int, answerSize: Int): PerfResult<Unit> {
@@ -208,7 +219,8 @@ abstract class AbstractTaskTests : AbstractFileTests() {
     }
 
     protected fun sortSequence(sortSequence: (String, String) -> Unit) {
-        try { // test 1 for usual cases
+        // tests for usual cases
+        try {
             sortSequence("input/seq_in1.txt", "temp.txt")
             assertFileContent(
                 "temp.txt",
@@ -225,7 +237,7 @@ abstract class AbstractTaskTests : AbstractFileTests() {
         } finally {
             File("temp.txt").delete()
         }
-        try { // test 2 for usual case
+        try {
             sortSequence("input/seq_in2.txt", "temp.txt")
             assertFileContent(
                 "temp.txt",
@@ -244,7 +256,7 @@ abstract class AbstractTaskTests : AbstractFileTests() {
         } finally {
             File("temp.txt").delete()
         }
-        try { // test 3 for usual case
+        try {
             sortSequence("input/seq_in3.txt", "temp.txt")
             assertFileContent(
                 "temp.txt",
@@ -263,7 +275,7 @@ abstract class AbstractTaskTests : AbstractFileTests() {
         } finally {
             File("temp.txt").delete()
         }
-        try {// test 4 for usual case
+        try {
             sortSequence("input/seq_in4.txt", "temp.txt")
             assertFileContent(
                 "temp.txt",
@@ -283,7 +295,7 @@ abstract class AbstractTaskTests : AbstractFileTests() {
         } finally {
             File("temp.txt").delete()
         }
-        try { // test 5 for usual case
+        try {
             sortSequence("input/seq_in5.txt", "temp.txt")
             assertFileContent(
                 "temp.txt",
@@ -304,7 +316,8 @@ abstract class AbstractTaskTests : AbstractFileTests() {
             File("temp.txt").delete()
         }
 
-        try { //test for empty input file
+        //test for empty input file
+        try {
             sortSequence("input/seq_in6.txt", "temp.txt")
             assertFileContent(
                 "temp.txt",
@@ -314,7 +327,7 @@ abstract class AbstractTaskTests : AbstractFileTests() {
             File("temp.txt").delete()
         }
 
-        //test for productivity
+        //test for performance
         fun testGeneratedSequence(totalSize: Int, answerSize: Int): PerfResult<Unit> {
             try {
                 val res = generateSequence(totalSize, answerSize)
