@@ -3,8 +3,10 @@ package lesson1;
 import kotlin.NotImplementedError;
 
 import java.io.*;
+import java.util.List;
 import java.util.ArrayList;
 import java.util.HashMap;
+
 
 @SuppressWarnings("unused")
 public class JavaTasks {
@@ -106,7 +108,7 @@ public class JavaTasks {
     //Ресурсоемкость = O(n)
     static public void sortTemperatures(String inputName, String outputName) throws IOException {
 
-        ArrayList<Integer> data = new ArrayList<>();//list for temperatures
+        List<Integer> data = new ArrayList<>();//list for temperatures
 
         BufferedReader br = new BufferedReader(new FileReader(inputName));
         try (br) {
@@ -171,7 +173,7 @@ public class JavaTasks {
     //Ресурсоемкость = O(n)
     static public void sortSequence(String inputName, String outputName) throws IOException {
         HashMap<Integer, Integer> count = new HashMap<>(); //map for numbers and their amount
-        ArrayList<Integer> numbers = new ArrayList<>(); //list for numbers sequence
+        List<Integer> numbers = new ArrayList<>(); //list for numbers sequence
 
         BufferedReader br = new BufferedReader(new FileReader(inputName));
         try (br) {
