@@ -99,10 +99,91 @@ public class BinarySearchTree<T extends Comparable<T>> extends AbstractSet<T> im
      *
      * Средняя
      */
+
+
     @Override
     public boolean remove(Object o) {
-        // TODO
-        throw new NotImplementedError();
+        if (root == null) return false; //Если в корень пустой
+        T t = (T) o;
+        Node<T> nodeToRemove = find(t);
+        if (nodeToRemove == null) return false;
+
+        return removeNode(nodeToRemove);
+
+    }
+
+    private boolean removeNode(Node<T> node){
+        if (node.left == null) {
+            transplant(node, node.right);
+        } else if (node.right == null){
+            transplant(node, node.left);
+        } else {
+            Node<T> y = minimum(node.right);
+
+            if (getParent(y) != node){
+
+                transplant(y, y.right);
+                y.right = node.right;
+                getParent(y.right) = y;
+            }
+            transplant(node, y);
+            y.left = node.left;
+            getParent(y.left) = y;
+
+        }
+        size --;
+        return true;
+    }
+
+    /*
+    Вспомогательный метод, возращающий минимальный элемент
+    поддерева с корнем в заданном узде node
+     */
+    private Node<T> minimum(Node<T> node){
+        while (node.left != null){
+            node = node.left;
+        }
+        return node;
+    }
+
+    /*
+    Вспомогательный метод, который заменяет одно поддерево, являющееся
+    дочерним по отношению к своеу родителю, другим поддеревом
+    */
+
+    private void transplant (Node<T> oldNode, Node<T> newNode){
+
+        Node<T> parentOfOld = getParent(oldNode);
+        if (parentOfOld == null) {
+            root = newNode;
+        } else if (parentOfOld.value.compareTo(oldNode.value) > 0) {
+                parentOfOld.left = newNode;
+            } else {
+                parentOfOld.right = newNode;
+            }
+        if (newNode != null){
+            getParent(newNode) = parentOfOld;
+        }
+    }
+
+    /*
+    Вспомогательный метод, находящий родителя для указанного узла
+     */
+    private Node<T> getParent(Node<T> child){
+        Node<T> parent = null;
+        Node<T> node = root;
+
+        while (node != child){
+
+            if(node.value.compareTo(child.value) < 0) {
+                parent = node;
+                node = node.right;
+            } else {
+                parent = node;
+                node = node.left;
+            }
+        }
+        return parent;
     }
 
     @Nullable
