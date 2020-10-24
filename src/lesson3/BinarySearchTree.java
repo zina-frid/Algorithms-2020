@@ -113,7 +113,7 @@ public class BinarySearchTree<T extends Comparable<T>> extends AbstractSet<T> im
     }
 
     private Node<T> removeNode(Node<T> tempRoot, T value) {
-        if (tempRoot.right == null && tempRoot.left == null) return null;
+
         //Случай, когда у узла нет детей
 
         int comparison = value.compareTo(tempRoot.value);
@@ -125,17 +125,18 @@ public class BinarySearchTree<T extends Comparable<T>> extends AbstractSet<T> im
         } else if (comparison < 0) {
             tempRoot.left = removeNode(tempRoot.left, value);
 
-        } else if (tempRoot.left != null && tempRoot.right != null) {
-
-            //Случай, когда у узла есть оба ребенка
-            Node<T> minNode = new Node<>(minimum(tempRoot.right).value);
-            minNode.left = tempRoot.left;
-            minNode.right = tempRoot.right;
-            tempRoot = minNode;
-            tempRoot.right = removeNode(tempRoot.right, tempRoot.value);
         } else {
-            if (tempRoot.right != null) return tempRoot.right;
-            else return tempRoot.left;
+            if (tempRoot.right == null && tempRoot.left == null) return null;
+            else if (tempRoot.left == null) return tempRoot.right;
+            else if (tempRoot.right == null) return tempRoot.left;
+            else {
+                //Случай, когда у узла есть оба ребенка
+                Node<T> minNode = new Node<>(minimum(tempRoot.right).value);
+                minNode.left = tempRoot.left;
+                minNode.right = tempRoot.right;
+                tempRoot = minNode;
+                tempRoot.right = removeNode(tempRoot.right, tempRoot.value);
+            }
         }
 
         return tempRoot;
