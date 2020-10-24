@@ -106,6 +106,7 @@ abstract class AbstractBinarySearchTreeTest {
         }
     }
 
+    //Тесты рассматривают все случаи
     protected fun doRemoveTest() {
         implementationTest { create().remove(0) }
         val random = Random()
@@ -164,6 +165,7 @@ abstract class AbstractBinarySearchTreeTest {
         }
     }
 
+    //Тесты рассматривают все случаи
     protected fun doIteratorTest() {
         implementationTest { create().iterator().hasNext() }
         implementationTest { create().iterator().next() }
@@ -207,6 +209,7 @@ abstract class AbstractBinarySearchTreeTest {
         }
     }
 
+    //Тесты рассматривают все случаи
     protected fun doIteratorRemoveTest() {
         implementationTest { create().iterator().remove() }
         val random = Random()
