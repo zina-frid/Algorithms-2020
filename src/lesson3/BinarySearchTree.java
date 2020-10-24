@@ -199,16 +199,19 @@ public class BinarySearchTree<T extends Comparable<T>> extends AbstractSet<T> im
 
     public class BinarySearchTreeIterator implements Iterator<T> {
 
-        private Stack<Node<T>> stack;
-        private Node<T> currentNode;
+        private Stack<Node<T>> stack = new Stack<>();
+        private Node<T> currNode = null;
+
+        private void pushToLeft(Node<T> node){
+            if (node != null){
+                stack.push(node);
+                pushToLeft(node.left);
+            }
+        }
 
         private BinarySearchTreeIterator() {
-            stack = new Stack<>();
-            currentNode = root;
-            while (currentNode != null) {
-                stack.push(currentNode);
-                currentNode = currentNode.left;
-            }
+            pushToLeft(root);
+
         }
 
         /**
@@ -243,20 +246,12 @@ public class BinarySearchTree<T extends Comparable<T>> extends AbstractSet<T> im
         public T next() {
             if (!hasNext()) throw new NoSuchElementException();
 
-            currentNode = stack.pop();
+            Node<T> node = stack.pop();
+            currNode = node;
 
-            Node<T> node = currentNode;
-
-            if (currentNode.right != null) {
-                currentNode = currentNode.right;
-                while (currentNode != null) {
-                    stack.push(currentNode);
-                    currentNode = currentNode.left;
-                }
-            }
+            pushToLeft(node.right);
 
             return node.value;
-
 
         }
 
