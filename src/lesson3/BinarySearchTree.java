@@ -166,7 +166,6 @@ public class BinarySearchTree<T extends Comparable<T>> extends AbstractSet<T> im
                 tempRoot.right = removeNode(tempRoot.right, tempRoot.value);
             }
         }
-
         return tempRoot;
     }
 
@@ -230,6 +229,7 @@ public class BinarySearchTree<T extends Comparable<T>> extends AbstractSet<T> im
 
         @Override
         public boolean hasNext() {
+
             return !stack.isEmpty();
         }
 
@@ -257,11 +257,9 @@ public class BinarySearchTree<T extends Comparable<T>> extends AbstractSet<T> im
 
             Node<T> node = stack.pop();
             currNode = node;
-
             pushToLeft(node.right);
 
             return node.value;
-
         }
 
         /**
