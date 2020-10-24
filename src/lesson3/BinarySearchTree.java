@@ -100,7 +100,19 @@ public class BinarySearchTree<T extends Comparable<T>> extends AbstractSet<T> im
      * Средняя
      */
 
+    /*
+    Неодходимые для рассмотрения случаи были взяты из книги
+    "Алгоритмы: построение и анализ" (Т.Кормен, Ч.Лейзерсона Р.Ривест, К.Штайн)
 
+     Рассматриваются 3 случая:
+            1) У узла нет потомков
+            2) У узла есть только один потомок
+            3) У узла есть оба потомка
+     */
+    //H - Высота дерева
+    //Трудоемкость = O(Н) - худший случай
+    //             = O(logH) - лучший случай
+    //Ресурсоемкость = O(1)
     @Override
     public boolean remove(Object o) {
         if (root == null || !contains(o)) return false;
@@ -112,25 +124,41 @@ public class BinarySearchTree<T extends Comparable<T>> extends AbstractSet<T> im
         return true;
     }
 
+    /*
+    1) Если потомков нет,то удаляемый узел просто удаляется
+    2) Если есть правый или левый потомок, то узел заменяется этим потомком
+    3) Если удаляемый элемент является корнем поддерва и имеет два потомка,
+    то его необходимо заменить на минимальный элемент из правого поддерева,
+    и соответственно, удалитьэтот правый элемент из дерева
+     */
     private Node<T> removeNode(Node<T> tempRoot, T value) {
-
-        //Случай, когда у узла нет детей
 
         int comparison = value.compareTo(tempRoot.value);
 
         if (comparison > 0) {
+
+            //Идем к правому потомку
             assert tempRoot.right != null;
             tempRoot.right = removeNode(tempRoot.right, value);
 
         } else if (comparison < 0) {
+
+            //Идем к левому потомку
             tempRoot.left = removeNode(tempRoot.left, value);
 
         } else {
+
+            //Случай, когда у узла нет потомков
             if (tempRoot.right == null && tempRoot.left == null) return null;
+
+            //Случаи, когда у узла либо левый, либо правый потомок
             else if (tempRoot.left == null) return tempRoot.right;
             else if (tempRoot.right == null) return tempRoot.left;
+
+            //Случай, когда у узла есть оба потомка
             else {
-                //Случай, когда у узла есть оба ребенка
+
+                //Поиск минимума в правом поддереве
                 Node<T> minNode = new Node<>(minimum(tempRoot.right).value);
                 minNode.left = tempRoot.left;
                 minNode.right = tempRoot.right;
