@@ -224,6 +224,10 @@ public class BinarySearchTree<T extends Comparable<T>> extends AbstractSet<T> im
          *
          * Средняя
          */
+
+        //Трудоемкость = O(1)
+        //Ресурсоемкость = O(1)
+
         @Override
         public boolean hasNext() {
             return !stack.isEmpty();
@@ -242,6 +246,11 @@ public class BinarySearchTree<T extends Comparable<T>> extends AbstractSet<T> im
          *
          * Средняя
          */
+
+        //H - Высота дерева
+        //Трудоемкость = O(Н) (не уверена в том, что так)
+        //Ресурсоемкость = O(1)
+
         @Override
         public T next() {
             if (!hasNext()) throw new NoSuchElementException();
@@ -268,6 +277,10 @@ public class BinarySearchTree<T extends Comparable<T>> extends AbstractSet<T> im
          * Сложная
          */
 
+        //H - Высота дерева
+        //Трудоемкость = O(Н) - худший случай
+        //             = O(logH) - лучший случай
+        //Ресурсоемкость = O(1)
         @Override
         public void remove() {
             if (currNode == null) throw new IllegalStateException();
