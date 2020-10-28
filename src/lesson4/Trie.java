@@ -92,8 +92,35 @@ public class Trie extends AbstractSet<String> implements Set<String> {
     @NotNull
     @Override
     public Iterator<String> iterator() {
-        // TODO
-        throw new NotImplementedError();
+        return new TrieIterator();
     }
+        public class TrieIterator implements Iterator<String> {
+
+            private TrieIterator() {
+                // Добавьте сюда инициализацию, если она необходима.
+            }
+
+
+            @Override
+            public boolean hasNext() {
+                // TODO
+                throw new NotImplementedError();
+            }
+
+
+            @Override
+            public String next() {
+                // TODO
+                throw new NotImplementedError();
+            }
+
+
+            @Override
+            public void remove() {
+                // TODO
+                throw new NotImplementedError();
+            }
+        }
+
 
 }
