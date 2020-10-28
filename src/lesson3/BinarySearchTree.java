@@ -247,8 +247,8 @@ public class BinarySearchTree<T extends Comparable<T>> extends AbstractSet<T> im
          * Средняя
          */
 
-        //H - Высота дерева
-        //Трудоемкость = O(Н) (не уверена в том, что так)
+        //N - Количество элементов
+        //Трудоемкость = O(N)
         //Ресурсоемкость = O(1)
 
         @Override
