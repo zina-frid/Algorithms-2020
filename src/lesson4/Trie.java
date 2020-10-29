@@ -97,10 +97,10 @@ public class Trie extends AbstractSet<String> implements Set<String> {
 
     public class TrieIterator implements Iterator<String> {
 
-
         private final Stack<String> stack = new Stack<>();
         private String next = "";
 
+        //Добавляет слова в стек
         private void pushWordsToStack(Node node, String string){
             if (root == null || node.children == null) return;
             for (Map.Entry<Character, Node> entry : node.children.entrySet()){
@@ -115,15 +115,12 @@ public class Trie extends AbstractSet<String> implements Set<String> {
             pushWordsToStack(root, "");
         }
 
-
         //Трудоемкость = O(1)
         //Ресурсоемкость = O(1)
         @Override
         public boolean hasNext() {
             return !stack.isEmpty();
         }
-
-
 
         //Трудоемкость = O(1)
         //Ресурсоемкость = O(1)
@@ -134,8 +131,6 @@ public class Trie extends AbstractSet<String> implements Set<String> {
             return next;
         }
 
-
-        //N - Количество элементов
         //Трудоемкость = O(NlogN)
         //Ресурсоемкость = O(NlogN)
         @Override
