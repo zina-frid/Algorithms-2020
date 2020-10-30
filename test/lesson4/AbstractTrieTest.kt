@@ -173,7 +173,7 @@ abstract class AbstractTrieTest {
 
         implementationTest { create().iterator().remove() }
 
-        for (iteration in 1..4) {
+        for (iteration in 1..5) {
             val controlSet = mutableSetOf<String>()
             var toRemove: String
             when (iteration) {
@@ -207,13 +207,24 @@ abstract class AbstractTrieTest {
                 }
 
                 //Удаление из конца
-                else -> {
+                4 -> {
                     controlSet.add("c")
                     controlSet.add("t")
                     controlSet.add("ca")
                     controlSet.add("car")
                     controlSet.add("cat")
                     toRemove = "cat"
+                }
+
+                //Удаление элемента, которго нет
+                else -> {
+                    controlSet.add("c")
+                    controlSet.add("t")
+                    controlSet.add("ca")
+                    controlSet.add("car")
+                    controlSet.add("cat")
+                    controlSet.add("tin")
+                    toRemove = "ti"
                 }
 
             }
