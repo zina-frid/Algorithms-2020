@@ -3,9 +3,7 @@ package lesson5;
 import kotlin.NotImplementedError;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.AbstractSet;
-import java.util.Iterator;
-import java.util.Set;
+import java.util.*;
 
 public class OpenAddressingSet<T> extends AbstractSet<T> {
 
@@ -93,9 +91,61 @@ public class OpenAddressingSet<T> extends AbstractSet<T> {
      *
      * Средняя
      */
+
+    //Трудоемкость = O(N) - худший случай
+    //             = O(1) - лучший случай
+    //Ресурсоемкость = O(1)
+
     @Override
     public boolean remove(Object o) {
-        return super.remove(o);
+
+        /*
+        int startingIndex = startingIndex(o);
+        int index = startingIndex;
+        Object current = storage[index];
+
+        while (current != null) {
+            if (current.equals(o))  {
+                storage[index] = null;
+                size --;
+                return true;
+            }
+            index = (index + 1) % capacity;
+            if (index == startingIndex) return false;
+            current = storage[index];
+        }
+        return false;
+         */
+
+
+        int index = startingIndex(o);
+        Object current = storage[index];
+
+        while (current != null) {
+            if (current.equals(o)) {
+
+                //Следующий индекс
+                int nextIndex = (index + 1) % capacity;
+                //"Удаление" элемента
+                storage[index] = null;
+
+                //Этим циклом сдвигаем следующие элементы
+                while (storage[nextIndex] != null) {
+                    storage[index] = storage[nextIndex];
+                    storage[nextIndex] = null;
+                    index = nextIndex;
+                    nextIndex = (index + 1) % capacity;
+                }
+
+                //Уменьшаем размер
+                size--;
+                return true;
+            }
+            //Следующий элемент становитс current
+            index = (index + 1) % capacity;
+            current = storage[index];
+        }
+        return false;
     }
 
     /**
