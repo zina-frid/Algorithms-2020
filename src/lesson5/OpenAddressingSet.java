@@ -47,6 +47,7 @@ public class OpenAddressingSet<T> extends AbstractSet<T> {
             index = (index + 1) % capacity;
             current = storage[index];
         }
+
         return false;
     }
 
@@ -99,26 +100,7 @@ public class OpenAddressingSet<T> extends AbstractSet<T> {
     @Override
     public boolean remove(Object o) {
 
-        /*
-        int startingIndex = startingIndex(o);
-        int index = startingIndex;
-        Object current = storage[index];
-
-        while (current != null) {
-            if (current.equals(o))  {
-                storage[index] = null;
-                size --;
-                return true;
-            }
-            index = (index + 1) % capacity;
-            if (index == startingIndex) return false;
-            current = storage[index];
-        }
-        return false;
-         */
-
-
-        int index = startingIndex(o);
+       int index = startingIndex(o);
         Object current = storage[index];
 
         while (current != null) {
@@ -129,7 +111,9 @@ public class OpenAddressingSet<T> extends AbstractSet<T> {
                 //"Удаление" элемента
                 storage[index] = null;
 
-                //Этим циклом сдвигаем следующие элементы
+                //Этим циклом сдвигаем следующие элементы на место "удаленного"
+                //Можем оказаться в ситуации, когда кол-во элементов, которые
+                //  необходимо сдвинуть, будет равно количеству всех элементов
                 while (storage[nextIndex] != null) {
                     storage[index] = storage[nextIndex];
                     storage[nextIndex] = null;
@@ -161,7 +145,53 @@ public class OpenAddressingSet<T> extends AbstractSet<T> {
     @NotNull
     @Override
     public Iterator<T> iterator() {
-        // TODO
-        throw new NotImplementedError();
+        return new OpenAddressingSetIterator();
+    }
+
+    public class OpenAddressingSetIterator implements Iterator <T>{
+
+        private int index = 0;
+        Object current = null;
+
+        private OpenAddressingSetIterator(){
+            nextIndex();
+        }
+
+        private void nextIndex(){
+            while (index < capacity && storage[index] == null){
+                index += 1;
+            }
+        }
+
+        //Трудоемкость = O(1)
+        //Ресурсоемкость = O(1)
+        @Override
+        public boolean hasNext() {
+            return index < capacity;
+        }
+
+
+        //Трудоемкость = O(N) - худший случай
+        //             = O(1) - лучший случай
+        //Ресурсоемкость = O(1)
+        @Override
+        public T next() {
+            if (!hasNext()) throw new IllegalStateException();
+
+            current = storage[index];
+            index += 1;
+            nextIndex();
+            return (T) current;
+        }
+
+        //Трудоемкость = O(N) - худший случай
+        //             = O(1) - лучший случай
+        //Ресурсоемкость = O(1)
+        @Override
+        public void remove() {
+            if (current == null) throw new IllegalStateException();
+            OpenAddressingSet.this.remove(current);
+            current = null;
+        }
     }
 }
