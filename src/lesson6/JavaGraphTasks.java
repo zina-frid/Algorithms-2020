@@ -2,8 +2,10 @@ package lesson6;
 
 import kotlin.NotImplementedError;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
+import java.util.Stack;
 
 @SuppressWarnings("unused")
 public class JavaGraphTasks {
@@ -119,8 +121,36 @@ public class JavaGraphTasks {
      *
      * Ответ: A, E, J, K, D, C, H, G, B, F, I
      */
+    //N - количество всех возможных путей
+    //M - количество соседей у вершины
+    //Трудоемкость = O(N * M)
+    //      худший случай, когда N=M
+    //Ресурсоемкость = O(N)
     public static Path longestSimplePath(Graph graph) {
-        throw new NotImplementedError();
+
+        Set<Graph.Vertex> vertices = graph.getVertices();
+        Stack<Path> paths = new Stack<>();
+        Path result = new Path();
+        int longest = 0;
+
+        for (Graph.Vertex vertex: vertices) paths.push(new Path(vertex));
+
+        while(!paths.isEmpty()){
+
+            //Ищем самый длинный
+            Path path = paths.pop();
+            if (path.getLength() > longest){
+                result = path;
+                longest = result.getLength();
+            }
+
+            //Число соседей последней вершины path
+            Set<Graph.Vertex> neighbours = graph.getNeighbors(path.getVertices().get(path.getLength()));
+            for (Graph.Vertex neighbour : neighbours){
+                if(!path.contains(neighbour)) paths.push(new Path(path, graph, neighbour));
+            }
+        }
+        return result;
     }
 
 
