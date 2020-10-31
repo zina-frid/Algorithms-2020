@@ -39,6 +39,7 @@ abstract class AbstractOpenAddressingSetTest {
         }
     }
 
+    //Тесты рассматривают все случаи
     protected fun doRemoveTest() {
         val random = Random()
         for (iteration in 1..100) {
@@ -120,6 +121,7 @@ abstract class AbstractOpenAddressingSetTest {
         }
     }
 
+    //Тесты рассматривают все случаи
     protected fun doIteratorRemoveTest() {
         val random = Random()
         for (iteration in 1..100) {

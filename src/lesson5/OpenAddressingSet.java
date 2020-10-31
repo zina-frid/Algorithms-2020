@@ -48,6 +48,11 @@ public class OpenAddressingSet<T> extends AbstractSet<T> {
             current = storage[index];
         }
 
+        for (Object value : storage) {
+            current = value;
+            if (current != null && current.equals(o)) return true;
+        }
+
         return false;
     }
 
@@ -106,26 +111,14 @@ public class OpenAddressingSet<T> extends AbstractSet<T> {
         while (current != null) {
             if (current.equals(o)) {
 
-                //Следующий индекс
-                int nextIndex = (index + 1) % capacity;
-                //"Удаление" элемента
+                //Удаление элемента
                 storage[index] = null;
-
-                //Этим циклом сдвигаем следующие элементы на место "удаленного"
-                //Можем оказаться в ситуации, когда кол-во элементов, которые
-                //  необходимо сдвинуть, будет равно количеству всех элементов
-                while (storage[nextIndex] != null) {
-                    storage[index] = storage[nextIndex];
-                    storage[nextIndex] = null;
-                    index = nextIndex;
-                    nextIndex = (index + 1) % capacity;
-                }
-
-                //Уменьшаем размер
+                //Уменьшение размера
                 size--;
                 return true;
             }
-            //Следующий элемент становитс current
+
+            //Следующий элемент становится current
             index = (index + 1) % capacity;
             current = storage[index];
         }
