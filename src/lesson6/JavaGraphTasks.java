@@ -2,10 +2,7 @@ package lesson6;
 
 import kotlin.NotImplementedError;
 
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
-import java.util.Stack;
+import java.util.*;
 
 @SuppressWarnings("unused")
 public class JavaGraphTasks {
@@ -97,8 +94,38 @@ public class JavaGraphTasks {
      *
      * Эта задача может быть зачтена за пятый и шестой урок одновременно
      */
+
+    //N - количество вершин
+    //Трудоемкость = O(N * N)
+    //Ресурсоемкость = O(N)
     public static Set<Graph.Vertex> largestIndependentVertexSet(Graph graph) {
-        throw new NotImplementedError();
+
+        //Set для всех множеств независимых вершин
+        Set<Set<Graph.Vertex>> finalSets = new HashSet<>();
+
+
+        for (Graph.Vertex vertex : graph.getVertices()){
+            //Set для хранения независимых вершин в данном рпоходе цикла
+            Set<Graph.Vertex> temp = new HashSet<>();
+            //Set для тех вершин, которые надо пропустить, так как они являются соседями вершин из temp
+            Set<Graph.Vertex> unsuitable = new HashSet<>();
+            for (Graph.Vertex vertex2 : graph.getVertices()){
+                //Проверка, является ли vertex2 соседом vertex и есть ли он в числе тех вершин, которые надо пропустить
+                if (!graph.getNeighbors(vertex).contains(vertex2) && !unsuitable.contains(vertex2)) {
+                    unsuitable.addAll(graph.getNeighbors(vertex2));
+                    temp.add(vertex2);
+                }
+            }
+            finalSets.add(temp);
+        }
+
+        //Ищем самое большое множество независимых вершин
+        Set<Graph.Vertex> result = new HashSet<>();
+        for (Set<Graph.Vertex> set : finalSets) {
+            if (set.size() > result.size()) result = set;
+        }
+
+        return result;
     }
 
     /**
