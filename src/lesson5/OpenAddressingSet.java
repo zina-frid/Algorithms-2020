@@ -15,6 +15,10 @@ public class OpenAddressingSet<T> extends AbstractSet<T> {
 
     private int size = 0;
 
+    private enum Removed{
+        REMOVED;
+    }
+
     private int startingIndex(Object element) {
         return element.hashCode() & (0x7FFFFFFF >> (31 - bits));
     }
@@ -47,12 +51,6 @@ public class OpenAddressingSet<T> extends AbstractSet<T> {
             index = (index + 1) % capacity;
             current = storage[index];
         }
-
-        for (Object value : storage) {
-            current = value;
-            if (current != null && current.equals(o)) return true;
-        }
-
         return false;
     }
 
@@ -71,7 +69,7 @@ public class OpenAddressingSet<T> extends AbstractSet<T> {
         int startingIndex = startingIndex(t);
         int index = startingIndex;
         Object current = storage[index];
-        while (current != null) {
+        while (current != null && current != Removed.REMOVED) {
             if (current.equals(t)) {
                 return false;
             }
@@ -105,14 +103,15 @@ public class OpenAddressingSet<T> extends AbstractSet<T> {
     @Override
     public boolean remove(Object o) {
 
-       int index = startingIndex(o);
+        int startingIndex = startingIndex(o);
+        int index = startingIndex;
         Object current = storage[index];
 
         while (current != null) {
             if (current.equals(o)) {
 
                 //Удаление элемента
-                storage[index] = null;
+                storage[index] = Removed.REMOVED;
                 //Уменьшение размера
                 size--;
                 return true;
@@ -120,6 +119,7 @@ public class OpenAddressingSet<T> extends AbstractSet<T> {
 
             //Следующий элемент становится current
             index = (index + 1) % capacity;
+            if (index == startingIndex) return false;
             current = storage[index];
         }
         return false;
@@ -144,6 +144,7 @@ public class OpenAddressingSet<T> extends AbstractSet<T> {
     public class OpenAddressingSetIterator implements Iterator <T>{
 
         private int index = 0;
+        private int prev = -1;
         Object current = null;
 
         private OpenAddressingSetIterator(){
@@ -151,7 +152,7 @@ public class OpenAddressingSet<T> extends AbstractSet<T> {
         }
 
         private void nextIndex(){
-            while (index < capacity && storage[index] == null){
+            while (index < capacity && (storage[index] == null || storage[index] == Removed.REMOVED)){
                 index += 1;
             }
         }
@@ -172,19 +173,22 @@ public class OpenAddressingSet<T> extends AbstractSet<T> {
             if (!hasNext()) throw new IllegalStateException();
 
             current = storage[index];
+            prev = index;
             index += 1;
             nextIndex();
+
             return (T) current;
         }
 
-        //Трудоемкость = O(N) - худший случай
-        //             = O(1) - лучший случай
+        //Трудоемкость = O(1)
         //Ресурсоемкость = O(1)
         @Override
         public void remove() {
-            if (current == null) throw new IllegalStateException();
-            OpenAddressingSet.this.remove(current);
-            current = null;
+            if (current == null || prev == -1) throw new IllegalStateException();
+            storage[prev] = Removed.REMOVED;
+            //Уменьшение размера
+            size--;
+
         }
     }
 }

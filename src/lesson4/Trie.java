@@ -97,48 +97,77 @@ public class Trie extends AbstractSet<String> implements Set<String> {
 
     public class TrieIterator implements Iterator<String> {
 
-        private final Stack<String> stack = new Stack<>();
-        private String next = "";
+        //Теперь stack не хранит все значения одновременно
+        private final Stack<Pair> stack = new Stack<>();
+        //Добавлены две вспомогательные переменные, поттому что иначе мы делаем одно и тоже
+        //Использована Pair, потому что так удобнее удалять в remove
+        private Pair string = null;
+        private Pair next;
 
-        //Добавляет слова в стек
-        private void pushWordsToStack(Node node, String string){
-            if (root == null || node.children == null) return;
-            for (Map.Entry<Character, Node> entry : node.children.entrySet()){
+        //Трудоемкость = O(N*M)
+        //Ресурсоемкость = O(1)
+        private Pair isThereNext(){
+            Pair result = null;
 
-                if (entry.getKey() == 0) stack.push(string);
+            //O(N) - количество элементов стеке
+            //Однако, эта оценка рчень неоднозначна, так как этто число меняется
+            while(!stack.isEmpty()){
+                Pair currentPair = stack.pop();
 
-                pushWordsToStack(entry.getValue(), string + entry.getKey());
+                //O(M) - количество детей у текущего node в currentPair
+                for (Map.Entry<Character, Node> child : currentPair.second.children.entrySet()) {
+
+                    if (child.getKey() != (char) 0)
+                        stack.push(new Pair(currentPair.first + child.getKey(),child.getValue()));
+
+                    else result = currentPair;
+                }
+                if (result != null) break;
             }
+            return result;
         }
 
         private TrieIterator() {
-            pushWordsToStack(root, "");
+            stack.push(new Pair("", root));
+            next = isThereNext();
         }
 
         //Трудоемкость = O(1)
         //Ресурсоемкость = O(1)
         @Override
         public boolean hasNext() {
-            return !stack.isEmpty();
+            return next != null;
+        }
+
+        //Трудоемкость = O()
+        //Ресурсоемкость = O()
+        @Override
+        public String next() {
+            if (!hasNext()) throw new IllegalStateException();
+            string = next;
+            next = isThereNext();
+            return string.first;
         }
 
         //Трудоемкость = O(1)
         //Ресурсоемкость = O(1)
         @Override
-        public String next() {
-            if (!hasNext()) throw new IllegalStateException();
-            next = stack.pop();
-            return next;
+        public void remove() {
+            if (string == null) throw new IllegalStateException();
+            string.second.children.remove((char) 0);
+            size--;
+            string = null;
         }
 
-        //Трудоемкость = O(NlogN)
-        //Ресурсоемкость = O(NlogN)
-        @Override
-        public void remove() {
-            if (next.equals("")) throw new IllegalStateException();
-            Trie.this.remove(next);
-            next = "";
+        //Класс Pair
+        public class Pair {
+            private String first;
+            private Node second;
+
+            public Pair(String first, Node second){
+                this.first = first;
+                this.second = second;
+            }
         }
     }
-
 }
