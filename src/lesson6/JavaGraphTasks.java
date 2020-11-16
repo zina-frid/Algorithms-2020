@@ -148,11 +148,10 @@ public class JavaGraphTasks {
      *
      * Ответ: A, E, J, K, D, C, H, G, B, F, I
      */
-    //N - количество всех возможных путей
-    //M - количество соседей у вершины
-    //Трудоемкость = O(N * M)
-    //      худший случай, когда N=M
-    //Ресурсоемкость = O(N)
+
+    //N - количество всех вершин
+    //Трудоемкость = O(N!)
+    //Ресурсоемкость = O(N!)
     public static Path longestSimplePath(Graph graph) {
 
         Set<Graph.Vertex> vertices = graph.getVertices();
@@ -171,7 +170,7 @@ public class JavaGraphTasks {
                 longest = result.getLength();
             }
 
-            //Число соседей последней вершины path
+            //Соседи последней вершины path
             Set<Graph.Vertex> neighbours = graph.getNeighbors(path.getVertices().get(path.getLength()));
             for (Graph.Vertex neighbour : neighbours){
                 if(!path.contains(neighbour)) paths.push(new Path(path, graph, neighbour));

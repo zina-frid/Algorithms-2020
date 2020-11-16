@@ -2,6 +2,7 @@ package lesson4;
 
 import java.util.*;
 
+import kotlin.NotImplementedError;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -92,82 +93,7 @@ public class Trie extends AbstractSet<String> implements Set<String> {
     @NotNull
     @Override
     public Iterator<String> iterator() {
-        return new TrieIterator();
-    }
-
-    public class TrieIterator implements Iterator<String> {
-
-        //Теперь stack не хранит все значения одновременно
-        private final Stack<Pair> stack = new Stack<>();
-        //Добавлены две вспомогательные переменные, поттому что иначе мы делаем одно и тоже
-        //Использована Pair, потому что так удобнее удалять в remove
-        private Pair string = null;
-        private Pair next;
-
-        //Трудоемкость = O(N*M)
-        //Ресурсоемкость = O(1)
-        private Pair isThereNext(){
-            Pair result = null;
-
-            //O(N) - количество элементов стеке
-            //Однако, эта оценка рчень неоднозначна, так как этто число меняется
-            while(!stack.isEmpty()){
-                Pair currentPair = stack.pop();
-
-                //O(M) - количество детей у текущего node в currentPair
-                for (Map.Entry<Character, Node> child : currentPair.second.children.entrySet()) {
-
-                    if (child.getKey() != (char) 0)
-                        stack.push(new Pair(currentPair.first + child.getKey(),child.getValue()));
-
-                    else result = currentPair;
-                }
-                if (result != null) break;
-            }
-            return result;
-        }
-
-        private TrieIterator() {
-            stack.push(new Pair("", root));
-            next = isThereNext();
-        }
-
-        //Трудоемкость = O(1)
-        //Ресурсоемкость = O(1)
-        @Override
-        public boolean hasNext() {
-            return next != null;
-        }
-
-        //Трудоемкость = O()
-        //Ресурсоемкость = O()
-        @Override
-        public String next() {
-            if (!hasNext()) throw new IllegalStateException();
-            string = next;
-            next = isThereNext();
-            return string.first;
-        }
-
-        //Трудоемкость = O(1)
-        //Ресурсоемкость = O(1)
-        @Override
-        public void remove() {
-            if (string == null) throw new IllegalStateException();
-            string.second.children.remove((char) 0);
-            size--;
-            string = null;
-        }
-
-        //Класс Pair
-        public class Pair {
-            private String first;
-            private Node second;
-
-            public Pair(String first, Node second){
-                this.first = first;
-                this.second = second;
-            }
-        }
+        // TODO
+        throw new NotImplementedError();
     }
 }
