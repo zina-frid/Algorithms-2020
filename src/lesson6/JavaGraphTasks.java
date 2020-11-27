@@ -151,7 +151,10 @@ public class JavaGraphTasks {
 
     //N - количество всех вершин
     //Трудоемкость = O(N!)
-    //Ресурсоемкость = O(N!)
+    //Ресурсоемкость = O(N^2)
+    //Максимальный размер paths = N - 1 + (N - 1) - 1 + (N - 2) - 1 +...+ (N - (N + 1)) =
+    // = N + (N - 1) + (N - 2) +...+ 2 + 1 - 1*(N - 1) = |исп. сумму арифм. прогр.| =
+    // = N * (N + 1) / 2 - (N - 1) = (N + N^2 - 2N + 2)/2 = (N^2 - N + 2)/2 -> O((N^2 - N + 2)/2) -> O(N^2)
     public static Path longestSimplePath(Graph graph) {
 
         Set<Graph.Vertex> vertices = graph.getVertices();
